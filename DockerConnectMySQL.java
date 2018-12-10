@@ -56,7 +56,7 @@ public class DockerConnectMySQL {
         int personId=1;
         while(true){
             System.out.println("1-show records 2-insert 3-exit");
-            int choice = Integer.parseInt(read.next());
+            int choice = Integer.parseInt(System.console().readLine();
             if(choice==1){
 		stmt = conn.createStatement();
       		sql = "SELECT PersonID, FirstName, LastName, Address, City FROM Persons";
