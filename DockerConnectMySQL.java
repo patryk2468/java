@@ -1,11 +1,7 @@
 import java.sql.*;
-import java.util.*;
-import java.lang.*;
-
 public class DockerConnectMySQL {
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_URL = "jdbc:mysql://10.0.10.3:3306/mysql";
-
    static final String USER = "pzamoscinski";
    static final String PASS = "password";
    
@@ -51,61 +47,33 @@ public class DockerConnectMySQL {
 	      	stmt.executeUpdate(sql);
 	      	stmt = null;
 	    }
-	    
-	Scanner read = new Scanner(System.in);
-        int personId=1;
-        while(true){
-            System.out.println("1-show records 2-insert 3-exit");
-            int choice = Integer.parseInt(System.console().readLine());
-            if(choice==1){
-		stmt = conn.createStatement();
-      		sql = "SELECT PersonID, FirstName, LastName, Address, City FROM Persons";
-      		rs = stmt.executeQuery(sql);
-
-	       while(rs.next()){
-		   	 int id  = rs.getInt("PersonID");
-        		String first = rs.getString("FirstName");
-         		String last = rs.getString("LastName");
+	   
+      	stmt = conn.createStatement();
+      	System.out.println("Inserting Data to Table");
+      	sql = "INSERT INTO Persons (PersonID, LastName, FirstName, Address, City) VALUES (1, 'Kowalski', 'Jan', 'Kwiatowa','Lublin'), (2, 'Konieczna', 'Anna', 'Nadbystrzycka','Lublin'), (3, 'Artur', 'Malinowski', 'Pogodna','Lublin')";
+      	stmt.executeUpdate(sql);	 
+      	stmt = null;
+	   
+      	stmt = conn.createStatement();
+      	sql = "SELECT PersonID, FirstName, LastName, Address, City FROM Persons";
+      	rs = stmt.executeQuery(sql);
+	    while(rs.next()){
+		    int id  = rs.getInt("PersonID");
+        	String first = rs.getString("FirstName");
+         	String last = rs.getString("LastName");
 	 		String address = rs.getString("Address");
 	 		String city = rs.getString("City");
 		
-         		System.out.println("ID: " + id);
-         		System.out.println(", First: " + first);
-         		System.out.println(", Last: " + last);
+         	System.out.println("ID: " + id);
+         	System.out.println(", First: " + first);
+         	System.out.println(", Last: " + last);
 	 		System.out.println(", Address: " + address);
 	 		System.out.println(", City: " + city);
-      		}
+      	}
       	
-      		rs.close();
-      		stmt.close();
-      		conn.close();
-            }
-            if(choice==2){
-                System.out.println("type number of records");
-                int liczbaRekordow = Integer.parseInt(read.next());
-                for(int i=0;i<liczbaRekordow;i++){
-                    System.out.println("wpisz nazwisko");
-                    String lastName = read.next();
-                    System.out.println("wpisz imie");
-                    String firstName = read.next();
-                    System.out.println("wpisz ulicę");
-                    String address = read.next();
-                    System.out.println("wpisz masto");
-                    String city= read.next();
-                    int id=personId;
-                    personId++;
-		    stmt = conn.createStatement();
-                    sql = "INSERT INTO Persons (PersonID, LastName, FirstName, Address, City) VALUES (id, lastName, firstName, address, city)";
-                    stmt.executeUpdate(sql);	 
-      		    stmt = null;
-		}
-            }
-            if(choice==3){
-                break;
-            }
-        }
-	   
-      	
+      	rs.close();
+      	stmt.close();
+      	conn.close();
    		
     }catch(SQLException se){
       	se.printStackTrace();
